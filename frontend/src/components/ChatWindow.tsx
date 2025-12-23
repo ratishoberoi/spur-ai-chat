@@ -27,7 +27,12 @@ function typeMessage(
 }
 
 export default function ChatWindow() {
-  const [messages, setMessages] = useState<Msg[]>([]);
+  const [messages, setMessages] = useState<Msg[]>([
+  {
+    sender: "ai",
+    text: "👋 Hi! I’m your Spur support assistant.\n\nI can help you with shipping, returns, refunds, or order-related questions.\n\nHow can I assist you today?"
+  }
+]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [conversationId, setConversationId] = useState<string>();
