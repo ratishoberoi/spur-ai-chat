@@ -44,19 +44,19 @@ This makes the system predictable, easy to reason about, and easy to extend to a
 
 ## 📁 Backend Structure (TypeScript + Node.js)
 
-backend/
-├─ src/
-│ ├─ routes/
-│ │ └─ chat.route.ts # HTTP layer, validation, error handling
-│ ├─ services/
-│ │ ├─ chat.service.ts # Conversation & message persistence
-│ │ └─ llm.service.ts # LLM integration (encapsulated)
-│ ├─ db/
-│ │ └─ prisma.ts # Prisma client
-│ └─ server.ts # App bootstrap
-├─ prisma/
-│ └─ schema.prisma # Data model & migrations
-└─ package.json
+backend
+├── prisma
+│   └── schema.prisma
+├── src
+│   ├── db
+│   │   └── prisma.ts
+│   ├── routes
+│   │   └── chat.route.ts
+│   ├── services
+│   │   ├── chat.service.ts
+│   │   └── llm.service.ts
+│   └── server.ts
+└── package.json
 
 markdown
 Copy code
