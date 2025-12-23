@@ -1,124 +1,134 @@
-**Spur AI Support Chat**
-A production-minded AI-powered customer support chat application built as part of the Spur Software Engineer assignment.
+# Spur AI Support Chat
 
-This project simulates a realistic AI support agent for a small e-commerce store, with a strong focus on clean architecture, robustness, correctness, and UX polish.
+A production-minded AI-powered customer support chat application built as part of the **Spur Software Engineer assignment**.
 
-**✨ Features**
-End-to-end chat experience (Frontend + Backend)
+This project simulates a realistic AI support agent for a small e-commerce store, with a strong focus on **clean architecture, robustness, correctness, and UX polish**.
 
-Session-based conversations
+---
 
-Persistent message storage
+## ✨ Features
 
-Real LLM integration (Groq – LLaMA 3.1)
+- End-to-end chat experience (Frontend + Backend)
+- Session-based conversations
+- Persistent message storage
+- Real LLM integration (Groq – LLaMA 3.1)
+- Graceful error handling
+- Typing indicator with realistic typing effect
+- Clean, readable, idiomatic TypeScript codebase
 
-Graceful error handling
+---
 
-Typing indicator with realistic typing effect
+## 🧱 Architecture Overview
 
-Clean, readable, idiomatic TypeScript codebase
+### High-Level Flow
 
-**🧱 Architecture Overview**
-
-**High-Level Flow
-**
-React Frontend (Vite) 
-        ↓
-POST /chat/message 
-        ↓
+React Frontend (Vite)
+↓
+POST /chat/message
+↓
 Chat Route (validation + orchestration)
-        ↓
+↓
 Chat Service (DB persistence + history)
-        ↓
+↓
 LLM Service (Groq LLaMA 3.1)
-        ↓
+↓
 Persist AI reply → return response
 
-The backend is intentionally stateless — conversation context is reconstructed from the database on every request. This makes the system predictable, easy to reason about, and easy to extend to additional channels (WhatsApp, Instagram, etc.).
+yaml
+Copy code
 
-**📁 Backend Structure (TypeScript + Node.js)**
+The backend is intentionally **stateless** — conversation context is reconstructed from the database on every request.  
+This makes the system predictable, easy to reason about, and easy to extend to additional channels (WhatsApp, Instagram, etc.).
+
+---
+
+## 📁 Backend Structure (TypeScript + Node.js)
+
 backend/
-
 ├─ src/
-
 │ ├─ routes/
+│ │ └─ chat.route.ts # HTTP layer, validation, error handling
+│ ├─ services/
+│ │ ├─ chat.service.ts # Conversation & message persistence
+│ │ └─ llm.service.ts # LLM integration (encapsulated)
+│ ├─ db/
+│ │ └─ prisma.ts # Prisma client
+│ └─ server.ts # App bootstrap
+├─ prisma/
+│ └─ schema.prisma # Data model & migrations
+└─ package.json
 
-│ │ └─ chat.route.ts # HTTP layer, validation, error handling │ ├─ services/
+markdown
+Copy code
 
-│ │ ├─ chat.service.ts # Conversation & message persistence │ │ └─ llm.service.ts # LLM integration (encapsulated) │ ├─ db/
+### Key Design Decisions
 
-│ │ └─ prisma.ts # Prisma client │ └─ server.ts # App bootstrap ├─ prisma/
+- Routes handle **only HTTP concerns**
+- Services contain **business logic**
+- LLM integration is **isolated behind a single service**
+- Prisma ORM ensures **clean, type-safe database access**
 
-│ └─ schema.prisma # Data model & migrations └─ package.json
+---
 
-Key Design Decisions
-Routes handle only HTTP concerns
+## 🖥 Frontend Structure (React + TypeScript + Vite)
 
-Services contain business logic
-
-LLM integration is isolated behind a single service
-
-Prisma ORM ensures clean, type-safe database access
-
-🖥 Frontend Structure (React + TypeScript + Vite)
-Single chat window UI
-
-Clear distinction between user and AI messages
-
-Auto-scroll to latest message
-
-Enter-to-send support
-
-Disabled input while request is in flight
-
-Typing indicator with character-by-character AI response simulation
+- Single chat window UI
+- Clear distinction between user and AI messages
+- Auto-scroll to latest message
+- Enter-to-send support
+- Disabled input while request is in flight
+- Typing indicator with character-by-character AI response simulation
 
 The typing effect avoids the “instant AI response” feel and makes the interaction closer to a real support agent.
 
-🗄 Data Model & Persistence
-Conversations
-id
+---
 
-createdAt
+## 🗄 Data Model & Persistence
 
-Messages
-id
+### Conversations
+- `id`
+- `createdAt`
 
-conversationId
+### Messages
+- `id`
+- `conversationId`
+- `sender` (`user` | `ai`)
+- `text`
+- `createdAt`
 
-sender (user | ai)
+Every user and AI message is persisted.  
+Conversation context is reconstructed from the database on each request.
 
-text
+---
 
-createdAt
+## 🚀 Running Locally (Step-by-Step)
 
-Every user and AI message is persisted. Conversation context is reconstructed from the database on each request.
+### 1️⃣ Clone the Repository
 
-**🚀 Running Locally (Step-by-Step)**
-1️⃣ Clone the Repository
-Bash
-
+```bash
 git clone https://github.com/ratishoberoi/spur-ai-chat.git
 cd spur-ai-chat
 2️⃣ Backend Setup
+bash
+Copy code
 cd backend
-
 npm install
+Configure Environment Variables
+Create a .env file:
 
-Configure Environment Variables Create a .env file:
-
-Bash
-
+bash
+Copy code
 type nul > .env
 Add the following:
 
-Code snippet
-
+env
+Copy code
 GROQ_API_KEY=your_groq_api_key_here
 DATABASE_URL=file:./dev.db
 3️⃣ Database Setup (Prisma)
+bash
+Copy code
 npx prisma migrate dev
-
 This will:
 
 Apply schema migrations
@@ -128,70 +138,106 @@ Create the SQLite database
 Generate the Prisma client
 
 4️⃣ Start the Backend
+bash
+Copy code
 npm run dev
+Backend will run at:
 
-Backend will run at: http://localhost:4000
-
+arduino
+Copy code
+http://localhost:4000
 5️⃣ Frontend Setup
-Open a new terminal window: cd frontend
+Open a new terminal window:
 
+bash
+Copy code
+cd frontend
 npm install
-
 npm run dev
+Frontend will run at:
 
-Frontend will run at: http://localhost:5173
-
+arduino
+Copy code
+http://localhost:5173
 You can now chat end-to-end locally.
 
 🔌 Backend API Endpoints (Verification & Testing)
 The backend is an API-only service and does not expose a root (/) page.
 
-If you open: https://spur-ai-chat-backend-r7hv.onrender.com/
+If you open:
 
-You will see: Cannot GET /
+arduino
+Copy code
+https://spur-ai-chat-backend-r7hv.onrender.com/
+You will see:
 
+sql
+Copy code
+Cannot GET /
 This is expected behavior.
 
 1️⃣ Health Check Endpoint
-URL: GET /health
+URL
 
-Example: https://spur-ai-chat-backend-r7hv.onrender.com/health
+bash
+Copy code
+GET /health
+Example
 
-Response:
+bash
+Copy code
+https://spur-ai-chat-backend-r7hv.onrender.com/health
+Response
 
-JSON
-
+json
+Copy code
 {
   "status": "ok",
   "service": "spur-ai-chat-backend"
 }
-Purpose: Confirms backend is running; Useful for deployment verification
+Purpose:
+
+Confirms backend is running
+
+Useful for deployment verification
 
 2️⃣ Chat Message Endpoint (Core API)
-URL: POST /chat/message
+URL
 
-Example: https://spur-ai-chat-backend-r7hv.onrender.com/chat/message
+bash
+Copy code
+POST /chat/message
+Example
 
-Request Body:
+bash
+Copy code
+https://spur-ai-chat-backend-r7hv.onrender.com/chat/message
+Request Body
 
-JSON
-
+json
+Copy code
 {
   "message": "What is your return policy?"
 }
-Response:
+Response
 
-JSON
-
+json
+Copy code
 {
   "reply": "We offer a 7-day no-questions-asked return policy...",
   "conversationId": "generated-conversation-id"
 }
-Notes: conversationId can be reused to continue the same conversation. All messages are persisted.
+Notes:
+
+conversationId can be reused to continue the same conversation
+
+All messages are persisted
+
+This endpoint is consumed by the deployed frontend
 
 3️⃣ Manual API Testing (Optional)
-Bash
-
+bash
+Copy code
 curl -X POST https://spur-ai-chat-backend-r7hv.onrender.com/chat/message \
   -H "Content-Type: application/json" \
   -d '{"message":"Do you ship to USA?"}'
@@ -209,7 +255,6 @@ Very low latency
 OpenAI-compatible API
 
 Prompting Strategy
-
 System prompt defines the agent as a helpful e-commerce support agent
 
 Store policies (shipping, returns, support hours) are embedded directly
@@ -249,6 +294,11 @@ Add basic analytics (latency, error rates)
 Improve accessibility and theming
 
 🌍 Deployment
-Frontend (Vercel): https://spur-ai-chat.vercel.app
+Frontend (Vercel):
+https://spur-ai-chat.vercel.app
 
-Backend (Render): https://spur-ai-chat-backend-r7hv.onrender.com
+Backend (Render):
+https://spur-ai-chat-backend-r7hv.onrender.com
+
+yaml
+Copy code
