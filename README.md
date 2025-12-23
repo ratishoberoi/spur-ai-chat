@@ -114,18 +114,20 @@ Copy code
 cd backend
 npm install
 Configure Environment Variables
-Create a .env file:
+Create a .env file in the backend directory:
 
 bash
 Copy code
 type nul > .env
-Add the following:
+Add the following variables to .env:
 
 env
 Copy code
 GROQ_API_KEY=your_groq_api_key_here
 DATABASE_URL=file:./dev.db
 3️⃣ Database Setup (Prisma)
+Run Prisma migrations:
+
 bash
 Copy code
 npx prisma migrate dev
@@ -133,28 +135,28 @@ This will:
 
 Apply schema migrations
 
-Create the SQLite database
+Create the SQLite database (dev.db)
 
 Generate the Prisma client
 
-4️⃣ Start the Backend
+4️⃣ Start the Backend Server
 bash
 Copy code
 npm run dev
-Backend will run at:
+The backend will start at:
 
 arduino
 Copy code
 http://localhost:4000
 5️⃣ Frontend Setup
-Open a new terminal window:
+Open a new terminal window, then run:
 
 bash
 Copy code
 cd frontend
 npm install
 npm run dev
-Frontend will run at:
+The frontend will be available at:
 
 arduino
 Copy code
