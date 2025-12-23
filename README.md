@@ -1,13 +1,9 @@
-Samajh gaya. Koi summary nahi, koi extra gyaan nahi—Word-to-word wahi content jo tumne bheja hai, bas ekdam top-notch professional formatting aur visual appeal ke saath.
-
-Ye lo tumhara "sexy" README:
-
-Spur AI Support Chat
+**Spur AI Support Chat**
 A production-minded AI-powered customer support chat application built as part of the Spur Software Engineer assignment.
 
 This project simulates a realistic AI support agent for a small e-commerce store, with a strong focus on clean architecture, robustness, correctness, and UX polish.
 
-✨ Features
+**✨ Features**
 End-to-end chat experience (Frontend + Backend)
 
 Session-based conversations
@@ -22,44 +18,39 @@ Typing indicator with realistic typing effect
 
 Clean, readable, idiomatic TypeScript codebase
 
-🧱 Architecture Overview
-High-Level Flow
-React Frontend (Vite) ↓
+**🧱 Architecture Overview**
 
-POST /chat/message ↓
-
+**High-Level Flow
+**
+React Frontend (Vite) 
+        ↓
+POST /chat/message 
+        ↓
 Chat Route (validation + orchestration)
-
-↓
-
+        ↓
 Chat Service (DB persistence + history)
-
-↓
-
+        ↓
 LLM Service (Groq LLaMA 3.1)
-
-↓
-
+        ↓
 Persist AI reply → return response
 
 The backend is intentionally stateless — conversation context is reconstructed from the database on every request. This makes the system predictable, easy to reason about, and easy to extend to additional channels (WhatsApp, Instagram, etc.).
 
-📁 Backend Structure (TypeScript + Node.js)
-Plaintext
-
+**📁 Backend Structure (TypeScript + Node.js)**
 backend/
+
 ├─ src/
-│  ├─ routes/
-│  │  └─ chat.route.ts     # HTTP layer, validation, error handling
-│  ├─ services/
-│  │  ├─ chat.service.ts   # Conversation & message persistence
-│  │  └─ llm.service.ts    # LLM integration (encapsulated)
-│  ├─ db/
-│  │  └─ prisma.ts         # Prisma client
-│  └─ server.ts            # App bootstrap
-├─ prisma/
-│  └─ schema.prisma        # Data model & migrations
-└─ package.json
+
+│ ├─ routes/
+
+│ │ └─ chat.route.ts # HTTP layer, validation, error handling │ ├─ services/
+
+│ │ ├─ chat.service.ts # Conversation & message persistence │ │ └─ llm.service.ts # LLM integration (encapsulated) │ ├─ db/
+
+│ │ └─ prisma.ts # Prisma client │ └─ server.ts # App bootstrap ├─ prisma/
+
+│ └─ schema.prisma # Data model & migrations └─ package.json
+
 Key Design Decisions
 Routes handle only HTTP concerns
 
@@ -103,22 +94,21 @@ createdAt
 
 Every user and AI message is persisted. Conversation context is reconstructed from the database on each request.
 
-🚀 Running Locally (Step-by-Step)
+**🚀 Running Locally (Step-by-Step)**
 1️⃣ Clone the Repository
 Bash
 
 git clone https://github.com/ratishoberoi/spur-ai-chat.git
 cd spur-ai-chat
 2️⃣ Backend Setup
-Bash
-
 cd backend
+
 npm install
+
 Configure Environment Variables Create a .env file:
 
 Bash
 
-# Windows
 type nul > .env
 Add the following:
 
@@ -127,9 +117,8 @@ Code snippet
 GROQ_API_KEY=your_groq_api_key_here
 DATABASE_URL=file:./dev.db
 3️⃣ Database Setup (Prisma)
-Bash
-
 npx prisma migrate dev
+
 This will:
 
 Apply schema migrations
@@ -139,23 +128,29 @@ Create the SQLite database
 Generate the Prisma client
 
 4️⃣ Start the Backend
-Bash
-
 npm run dev
+
 Backend will run at: http://localhost:4000
 
 5️⃣ Frontend Setup
-Open a new terminal window:
+Open a new terminal window: cd frontend
 
-Bash
-
-cd frontend
 npm install
+
 npm run dev
+
 Frontend will run at: http://localhost:5173
 
+You can now chat end-to-end locally.
+
 🔌 Backend API Endpoints (Verification & Testing)
-The backend is an API-only service and does not expose a root (/) page. If you open https://spur-ai-chat-backend-r7hv.onrender.com/, you will see Cannot GET /. This is expected behavior.
+The backend is an API-only service and does not expose a root (/) page.
+
+If you open: https://spur-ai-chat-backend-r7hv.onrender.com/
+
+You will see: Cannot GET /
+
+This is expected behavior.
 
 1️⃣ Health Check Endpoint
 URL: GET /health
@@ -170,7 +165,7 @@ JSON
   "status": "ok",
   "service": "spur-ai-chat-backend"
 }
-Purpose: Confirms backend is running; useful for deployment verification.
+Purpose: Confirms backend is running; Useful for deployment verification
 
 2️⃣ Chat Message Endpoint (Core API)
 URL: POST /chat/message
