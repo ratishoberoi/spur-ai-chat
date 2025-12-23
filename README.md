@@ -1,8 +1,8 @@
 # Spur AI Support Chat
 
-A production-minded AI-powered customer support chat application built as part of the Spur Software Engineer assignment.
+A production-minded AI-powered customer support chat application built as part of the **Spur Software Engineer assignment**.
 
-This project simulates a realistic support assistant for a small e-commerce store, with a strong focus on correctness, clean architecture, robustness, and user experience.
+This project simulates a realistic AI support agent for a small e-commerce store, with a strong focus on **clean architecture, robustness, correctness, and UX polish**.
 
 ---
 
@@ -14,7 +14,7 @@ This project simulates a realistic support assistant for a small e-commerce stor
 - Real LLM integration (Groq – LLaMA 3.1)
 - Graceful error handling
 - Typing indicator with realistic typing effect
-- Clean, readable TypeScript codebase
+- Clean, readable, idiomatic TypeScript codebase
 
 ---
 
@@ -37,8 +37,8 @@ Persist AI reply → return response
 yaml
 Copy code
 
-The backend is intentionally **stateless** — all conversation context is reconstructed from the database.  
-This makes the system easier to reason about and easy to extend with more channels (WhatsApp, IG, etc.).
+The backend is intentionally **stateless** — conversation context is reconstructed from the database on every request.  
+This makes the system predictable, easy to reason about, and easy to extend to additional channels (WhatsApp, Instagram, etc.).
 
 ---
 
@@ -62,10 +62,11 @@ markdown
 Copy code
 
 ### Key Design Decisions
-- **Routes** handle only HTTP concerns.
-- **Services** contain business logic.
-- **LLM integration is isolated** behind a single service.
-- Prisma ORM ensures clean, type-safe database access.
+
+- Routes handle **only HTTP concerns**
+- Services contain **business logic**
+- LLM integration is **isolated behind a single service**
+- Prisma ORM ensures **clean, type-safe database access**
 
 ---
 
@@ -78,7 +79,7 @@ Copy code
 - Disabled input while request is in flight
 - Typing indicator with character-by-character AI response simulation
 
-The typing effect avoids the “instant AI response” feel and makes the interaction feel closer to a real support agent.
+The typing effect avoids the “instant AI response” feel and makes the interaction closer to a real support agent.
 
 ---
 
@@ -103,7 +104,7 @@ Conversation context is reconstructed from the database on each request.
 ## 🚀 Running Locally (Step-by-Step)
 
 ### 1️⃣ Clone the Repository
-```bash
+
 git clone https://github.com/ratishoberoi/spur-ai-chat.git
 cd spur-ai-chat
 2️⃣ Backend Setup
@@ -111,15 +112,15 @@ bash
 Copy code
 cd backend
 npm install
-Environment Variables
+Configure Environment Variables
 Create a .env file:
 
 bash
 Copy code
 type nul > .env
-Add:
+Add the following:
 
-ini
+env
 Copy code
 GROQ_API_KEY=your_groq_api_key_here
 DATABASE_URL=file:./dev.db
@@ -135,32 +136,34 @@ Create the SQLite database
 
 Generate the Prisma client
 
-4️⃣ Start Backend
+4️⃣ Start the Backend
 bash
 Copy code
 npm run dev
-Backend runs at:
+Backend will run at:
 
 arduino
 Copy code
 http://localhost:4000
 5️⃣ Frontend Setup
-Open a new terminal:
+Open a new terminal window:
 
 bash
 Copy code
 cd frontend
 npm install
 npm run dev
-Frontend runs at:
+Frontend will run at:
 
 arduino
 Copy code
 http://localhost:5173
+You can now chat end-to-end locally.
+
 🔌 Backend API Endpoints (Verification & Testing)
 The backend is an API-only service and does not expose a root (/) page.
 
-If you open the base backend URL in a browser:
+If you open:
 
 arduino
 Copy code
@@ -177,7 +180,12 @@ URL
 
 bash
 Copy code
-GET https://spur-ai-chat-backend-r7hv.onrender.com/health
+GET /health
+Example
+
+bash
+Copy code
+https://spur-ai-chat-backend-r7hv.onrender.com/health
 Response
 
 json
@@ -197,7 +205,12 @@ URL
 
 bash
 Copy code
-POST https://spur-ai-chat-backend-r7hv.onrender.com/chat/message
+POST /chat/message
+Example
+
+bash
+Copy code
+https://spur-ai-chat-backend-r7hv.onrender.com/chat/message
 Request Body
 
 json
@@ -217,13 +230,11 @@ Notes:
 
 conversationId can be reused to continue the same conversation
 
-Messages are persisted for each session
+All messages are persisted
 
 This endpoint is consumed by the deployed frontend
 
 3️⃣ Manual API Testing (Optional)
-Using curl:
-
 bash
 Copy code
 curl -X POST https://spur-ai-chat-backend-r7hv.onrender.com/chat/message \
@@ -232,54 +243,54 @@ curl -X POST https://spur-ai-chat-backend-r7hv.onrender.com/chat/message \
 🤖 LLM Integration Notes
 Provider: Groq
 
-Model: LLaMA 3.1 (8B, instant)
+Model: LLaMA 3.1 (8B)
 
 Why Groq?
 
 Free tier available
 
-Low latency
+Very low latency
 
 OpenAI-compatible API
 
 Prompting Strategy
-System prompt defines the agent as a helpful e-commerce support agent.
+System prompt defines the agent as a helpful e-commerce support agent
 
-Store policies (shipping, returns, support hours) are embedded directly.
+Store policies (shipping, returns, support hours) are embedded directly
 
-Recent conversation history is included for contextual replies.
+Recent conversation history is included for contextual replies
 
-History length is capped to control cost and latency.
+History length is capped to control cost and latency
 
 🛡 Robustness & Error Handling
-Empty messages are rejected.
+Empty messages are rejected
 
-Backend never crashes on invalid input.
+Backend never crashes on invalid input
 
-LLM/API failures are caught and surfaced as friendly user-facing errors.
+LLM/API failures are caught and surfaced as friendly user-facing errors
 
-Frontend disables input during in-flight requests.
+Frontend disables input during in-flight requests
 
-No secrets are committed to the repository.
+No secrets are committed to the repository
 
 Graceful failure is always preferred over silent failure.
 
 ⚖ Trade-offs & Future Improvements
 Trade-offs
-SQLite chosen for simplicity and portability.
+SQLite chosen for simplicity and portability
 
-Prompt-based FAQ knowledge instead of a vector database.
+Prompt-based FAQ knowledge instead of a vector database
 
 If I Had More Time…
-Add vector search for dynamic FAQs.
+Add vector search for dynamic FAQs
 
-Reload conversation history on page refresh.
+Reload conversation history on page refresh
 
-Stream LLM responses instead of simulated typing.
+Stream LLM responses instead of simulated typing
 
-Add basic analytics (latency, error rates).
+Add basic analytics (latency, error rates)
 
-Improve accessibility and theming.
+Improve accessibility and theming
 
 🌍 Deployment
 Frontend (Vercel):
