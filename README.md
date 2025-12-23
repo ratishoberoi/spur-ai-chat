@@ -43,7 +43,7 @@ This makes the system predictable, easy to reason about, and easy to extend to a
 ---
 
 ## 📁 Backend Structure (TypeScript + Node.js)
-
+```
 backend
 ├── prisma
 │   └── schema.prisma
@@ -57,9 +57,7 @@ backend
 │   │   └── llm.service.ts
 │   └── server.ts
 └── package.json
-
-markdown
-Copy code
+```
 
 ### Key Design Decisions
 
